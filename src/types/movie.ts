@@ -1,4 +1,5 @@
 export type Movie = {
+    _id: string;
     title: string;
     director: string;
     rating: string;
@@ -6,4 +7,5 @@ export type Movie = {
     releaseDate: string;
     description: string;
     poster: string;
+    slug: string;
 };
