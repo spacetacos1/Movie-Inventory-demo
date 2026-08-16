@@ -1,8 +1,4 @@
-type Movie = {
-  title: string;
-  year: number;
-  genre: string;
-};
+import type { Movie } from "@/types/movie";
 
 type MovieCardProps = {
   movie: Movie;
