@@ -1,5 +1,9 @@
 export type Movie = {
     title: string;
-    year: number;
-    genre: string;
+    director: string;
+    rating: string;
+    budget: number;
+    releaseDate: string;
+    description: string;
+    poster: string;
 };

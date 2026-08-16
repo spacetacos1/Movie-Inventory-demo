@@ -1,32 +1,14 @@
 import MovieCard from "@/components/MovieCard";
-import type { Movie } from "@/types/movie";
+import { movies } from "@/data/movies";
 
 export default function Home() {
-  const movies: Movie[] = [ //movies is the name of the array
-    {
-      title: "The Matrix",
-      year: 1999,
-      genre: "Science Fiction",
-    },
-    {
-      title: "Jurassic Park",
-      year: 1993,
-      genre: "Adventure",
-    },
-    {
-      title: "Alien",
-      year: 1979,
-      genre: "Horror",
-    },
-  ];
-
   return (
     <main className="p-8">
       <h1 className="mb-6 text-4xl font-bold">
         Movie Inventory
       </h1>
 
-      <div className="space-y-4">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {movies.map((movie) => (
           <MovieCard
             key={movie.title}
