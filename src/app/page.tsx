@@ -1,4 +1,4 @@
-import MovieCard from "@/components/MovieCard";
+import MovieSearch from "@/components/MovieSearch";
 import type { Movie } from "@/types/movie";
 import { client } from "@/sanity/lib/client";
 import { moviesQuery } from "@/sanity/lib/queries";
@@ -12,14 +12,7 @@ export default async function Home() {
         Movie Inventory
       </h1>
 
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {movies.map((movie) => (
-          <MovieCard
-            key={movie._id}
-            movie={movie}
-          />
-        ))}
-      </div>
+      <MovieSearch movies={movies} />
     </main>
   );
 }
