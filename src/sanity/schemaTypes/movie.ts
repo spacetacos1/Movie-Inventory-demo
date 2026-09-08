@@ -22,7 +22,7 @@ export const movieType = defineType({
     }),
     defineField({
       name: "director",
-      title: "director",
+      title: "Director",
       type: "string",
       validation: (Rule) => Rule.required(),
     }),
@@ -36,7 +36,7 @@ export const movieType = defineType({
           { title: "PG", value: "PG" },
           { title: "PG-13", value: "PG-13" },
           { title: "R", value: "R" },
-          { title: "NC-17", value: "NC" },
+          { title: "NC-17", value: "NC-17" },
         ],
       },
       validation: (Rule) => Rule.required(),

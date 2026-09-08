@@ -12,11 +12,12 @@ export default function MovieSearch({ movies }: MovieSearchProps) {
   const [search, setSearch] = useState("");
 
   const filteredMovies = movies.filter((movie) =>
-    movie.title.toLowerCase().includes(search.toLowerCase())
-  );
+  movie.title.toLowerCase().includes(search.toLowerCase()) ||
+  movie.director.toLowerCase().includes(search.toLowerCase())
+);;
 
   return (
-    <div>
+    <div className="w-full min-w-0">
       <input
         type="text"
         placeholder="Search movies..."
@@ -27,14 +28,14 @@ export default function MovieSearch({ movies }: MovieSearchProps) {
 
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {filteredMovies.length > 0 ? ( //Did the user type something?
-        filteredMovies.map((movie) => (
+        filteredMovies.map((movie) => ( //If they did then search for it and display
           <MovieCard key={movie._id} movie={movie} />
         )) //Did you find what the user typed?
-        ) : ( //If not, do the following
+        ) : search ? ( //If not, do the following
             <p className="text-gray-600">
                 No movies found.
             </p>
-        )}
+        ) : null}
       </div>
     </div>
   );

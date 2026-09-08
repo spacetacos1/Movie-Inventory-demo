@@ -7,11 +7,10 @@ export default async function Home() {
   const movies = await client.fetch<Movie[]>(moviesQuery);
 
   return (
-    <main className="p-8">
-      <h1 className="mb-6 text-4xl font-bold">
-        Movie Inventory
-      </h1>
-
+    <main className="mx-auto w-full max-w-5xl p-8">
+      <h1 className="text-4xl font-bold">
+  Movies
+</h1>
       <MovieSearch movies={movies} />
     </main>
   );

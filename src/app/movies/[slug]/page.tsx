@@ -1,13 +1,41 @@
+//Movie page shown after clicking on a movie (details page if you will)
 import { client } from "@/sanity/lib/client";
 import { movieBySlugQuery } from "@/sanity/lib/queries";
 import type { Movie } from "@/types/movie";
 import Image from "next/image";
+import { notFound } from "next/navigation";
+import type { Metadata } from "next";
+import Link from "next/link";
 
 type Props = {
   params: Promise<{
     slug: string;
   }>;
 };
+
+//This function takes the params attribute of object Props, and returns a Promise containing metadata
+export async function generateMetadata(
+  { params }: Props
+): Promise<Metadata> {
+  const { slug } = await params;
+
+  const movie = await client.fetch<Movie | null>(
+    movieBySlugQuery,
+    { slug }
+  );
+
+  if (!movie) {
+    return {
+      title: "Movie Not Found",
+    };
+  }
+
+  return {
+    title: `${movie.title} | Movie Inventory`,
+    description: movie.description,
+  };
+}
+
 
 export default async function MoviePage({ params }: Props) {
   const { slug } = await params;
@@ -17,14 +45,8 @@ export default async function MoviePage({ params }: Props) {
     { slug }
   );
 
-  if (!movie) {
-    return (
-      <main className="p-8">
-        <h1 className="text-4xl font-bold">
-          Movie not found
-        </h1>
-      </main>
-    );
+  if(!movie) {
+    notFound();
   }
 
   const releaseDate = new Date(movie.releaseDate);
@@ -37,6 +59,12 @@ export default async function MoviePage({ params }: Props) {
 
   return (
   <main className="mx-auto max-w-5xl p-8">
+    <Link
+  href="/"
+  className="mb-6 inline-block text-blue-600 hover:underline"
+>
+  ← Back to movies
+</Link>
     <div className="grid gap-8 md:grid-cols-[300px_1fr]">
       <Image
         src={movie.poster}

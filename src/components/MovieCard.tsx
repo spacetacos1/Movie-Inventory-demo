@@ -26,6 +26,10 @@ export default function MovieCard({ movie }: MovieCardProps) {
           <p className="mt-2">
             {movie.rating} • {new Date(movie.releaseDate).getFullYear()}
           </p>
+
+          <p className="mt-1 text-gray-600">
+            Directed by {movie.director}
+          </p>
         </div>
       </div>
     </Link>
