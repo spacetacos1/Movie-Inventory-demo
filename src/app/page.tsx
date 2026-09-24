@@ -2,6 +2,7 @@ import MovieSearch from "@/components/MovieSearch";
 import type { Movie } from "@/types/movie";
 import { client } from "@/sanity/lib/client";
 import { moviesQuery } from "@/sanity/lib/queries";
+import AddMovieButton from "@/components/AddMovieButton";
 
 export default async function Home() {
   const movies = await client.fetch<Movie[]>(moviesQuery);
@@ -11,6 +12,7 @@ export default async function Home() {
       <h1 className="text-4xl font-bold">
   Movies
 </h1>
+<AddMovieButton/>
       <MovieSearch movies={movies} />
     </main>
   );
