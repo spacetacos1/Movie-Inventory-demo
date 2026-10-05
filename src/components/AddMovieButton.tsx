@@ -8,7 +8,8 @@ export default function AddMovieButton() {
 
     return (
         <>
-            <button onClick={() => setIsOpen(true)}>
+            <button onClick={() => setIsOpen(true)}
+                className="px-5 py-2 text-4x1 font-bold">
                 Add Movie
             </button>
 

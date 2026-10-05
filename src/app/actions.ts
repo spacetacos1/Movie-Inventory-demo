@@ -45,4 +45,6 @@ export async function createMovie(formData: FormData) {
     console.log(movie);
 
     console.log(posterAsset);
+
+    return { success: true };
 }
