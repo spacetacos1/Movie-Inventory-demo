@@ -3,6 +3,7 @@
 import { useState } from "react";
 import type { Movie } from "@/types/movie";
 import MovieCard from "./MovieCard";
+import MovieModal from "@/components/MovieModal";
 
 type MovieSearchProps = {
   movies: Movie[];
@@ -10,6 +11,8 @@ type MovieSearchProps = {
 
 export default function MovieSearch({ movies }: MovieSearchProps) {
   const [search, setSearch] = useState("");
+  const [openMenuId, setOpenMenuId] = useState<string | null>(null);
+  const [editingMovie, setEditingMovie] = useState<Movie | null>(null);
 
   const filteredMovies = movies.filter((movie) =>
   movie.title.toLowerCase().includes(search.toLowerCase()) ||
@@ -26,10 +29,16 @@ export default function MovieSearch({ movies }: MovieSearchProps) {
         className="mb-6 w-full rounded-lg border p-3"
       />
 
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid grid-cols-1 items-start gap-6 md:grid-cols-2 lg:grid-cols-3">
         {filteredMovies.length > 0 ? ( //Did the user type something?
         filteredMovies.map((movie) => ( //If they did then search for it and display
-          <MovieCard key={movie._id} movie={movie} />
+
+          <MovieCard key={movie._id} movie={movie} menuOpen={openMenuId === movie._id}
+          onMenuToggle={() => setOpenMenuId(openMenuId === movie._id ? null : movie._id)}
+          onEdit={() => {
+            setEditingMovie(movie)
+            setOpenMenuId(null)
+          }}/>
         )) //Did you find what the user typed?
         ) : search ? ( //If not, do the following
             <p className="text-gray-600">
@@ -37,6 +46,13 @@ export default function MovieSearch({ movies }: MovieSearchProps) {
             </p>
         ) : null}
       </div>
+
+      {editingMovie && (
+        <MovieModal
+            movie={editingMovie}
+            onClose={() => setEditingMovie(null)}
+        />
+      )}
     </div>
   );
 }

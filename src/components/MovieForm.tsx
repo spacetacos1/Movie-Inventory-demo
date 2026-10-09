@@ -1,10 +1,14 @@
 "use client";
 
-import React from "react";
-import {createMovie} from "@/app/actions";
-import {useState} from "react";
+import React, { useState } from "react";
+import {createMovie, updateMovie} from "@/app/actions";
+import type { Movie } from "@/types/movie";
 
-export default function MovieForm() { //Note: Because this is a component, is must be a function
+type MovieFormProps = {
+    movie?: Movie; //movie? means that this is an optional prop
+};
+
+export default function MovieForm({movie}: MovieFormProps) { //Note: Because this is a component, is must be a function
 
     const [success, setSuccess] = useState(false);
 
@@ -48,15 +52,20 @@ export default function MovieForm() { //Note: Because this is a component, is mu
         //Poster validation
         const poster = data.poster;
 
-        if(!(poster instanceof File) || poster.size === 0) {
+        if (!movie && (!(poster instanceof File) || poster.size === 0)) {
             console.log("Poster is required");
             return;
         }
 
         console.log(data);
 
-        const result = await createMovie(formData);
-        
+        let result;
+        if (movie) {
+            result = await updateMovie(movie._id, formData);
+        } else {
+            result = await createMovie(formData);
+        }
+
         if(result.success) {
             setSuccess(true);
         }
@@ -67,21 +76,38 @@ export default function MovieForm() { //Note: Because this is a component, is mu
             <label htmlFor="title">
                 Title
             </label>
-            <input id="title" name="title" type="text" required className="rounded-md border bg-white px-3 py-2 text-black dark:bg-gray-900 dark:text-white" />
+            <input 
+            id="title" 
+            name="title" 
+            type="text" 
+            required 
+            defaultValue={movie?.title ?? ""} //??.. supplies an empty string if there is no movie
+            className="rounded-md border bg-white px-3 py-2 text-black dark:bg-gray-900 dark:text-white" />
             </div>
 
             <div className="flex flex-col gap-2">
             <label htmlFor="director">
                 Director
             </label>
-            <input id="director" name="director" type="text" required className="rounded-md border bg-white px-3 py-2 text-black dark:bg-gray-900 dark:text-white"/>
+            <input 
+            id="director" 
+            name="director" 
+            type="text" 
+            required 
+            defaultValue={movie?.director ?? ""}
+            className="rounded-md border bg-white px-3 py-2 text-black dark:bg-gray-900 dark:text-white"/>
             </div>
 
             <div className="flex flex-col gap-2">
             <label htmlFor="rating">
                 Rating
             </label>
-            <select id="rating" name="rating" required className="rounded-md border bg-white px-3 py-2 text-black dark:bg-gray-900 dark:text-white">
+            <select 
+            id="rating" 
+            name="rating" 
+            required 
+            defaultValue={movie?.rating ?? ""}
+            className="rounded-md border bg-white px-3 py-2 text-black dark:bg-gray-900 dark:text-white">
                 <option value="">Select a rating</option>
                 <option value="G">G</option>
                 <option value="PG">PG</option>
@@ -95,38 +121,57 @@ export default function MovieForm() { //Note: Because this is a component, is mu
             <label htmlFor="budget">
                 Budget
             </label>
-            <input id="budget" name="budget" type="number" min="0" required className="rounded-md border bg-white px-3 py-2 text-black dark:bg-gray-900 dark:text-white"/>
+            <input 
+            id="budget" 
+            name="budget" 
+            type="number" 
+            min="0" 
+            required 
+            defaultValue={movie?.budget ?? ""}
+            className="rounded-md border bg-white px-3 py-2 text-black dark:bg-gray-900 dark:text-white"/>
             </div>
 
             <div className="flex flex-col gap-2">
             <label htmlFor="releaseDate">
                 Release Date
             </label>
-            <input id="releaseDate" name="releaseDate" type="date" required className="rounded-md border bg-white px-3 py-2 text-black dark:bg-gray-900 dark:text-white"/>
+            <input 
+            id="releaseDate" 
+            name="releaseDate" 
+            type="date" 
+            required 
+            defaultValue={movie?.releaseDate ?? ""}
+            className="rounded-md border bg-white px-3 py-2 text-black dark:bg-gray-900 dark:text-white"/>
             </div>
 
             <div className="flex flex-col gap-2">
             <label htmlFor="description">
                 Description
             </label>
-            <input id="description" name="description" type="textarea" required className="rounded-md border bg-white px-3 py-2 text-black dark:bg-gray-900 dark:text-white"/>
+            <input 
+            id="description" 
+            name="description" 
+            type="textarea" 
+            required 
+            defaultValue={movie?.description ?? ""}
+            className="rounded-md border bg-white px-3 py-2 text-black dark:bg-gray-900 dark:text-white"/>
             </div>
 
             <div className="flex flex-col gap-2">
             <label htmlFor="poster">
                 Poster
             </label>
-            <input id="poster" name="poster" type="file" accept="image/*" required className="rounded-md border bg-white px-3 py-2 text-black dark:bg-gray-900 dark:text-white"/>
+            <input id="poster" name="poster" type="file" accept="image/*" required={!movie} className="rounded-md border bg-white px-3 py-2 text-black dark:bg-gray-900 dark:text-white"/>
             </div>
 
             {success && (
                 <p className="text-sm font-medium text-green-600 dark:text-green-400">
-                    Movie added successfully!
+                    {movie ? "Movie updated successfully!" : "Movie added successfully!"}
                 </p>
             )}
             <div className="flex flex-col gap-2">
             <button type="submit" className="rounded-md bg-blue-600 px-5 py-2 text-lg font-semibold text-white hover:bg-blue-700">
-                Add Movie
+                {movie ? "Save Changes" : "Add Movie"}
             </button>
             </div>
         </form>
