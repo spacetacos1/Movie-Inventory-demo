@@ -4,6 +4,8 @@ import { useState } from "react";
 import type { Movie } from "@/types/movie";
 import MovieCard from "./MovieCard";
 import MovieModal from "@/components/MovieModal";
+import { deleteMovie } from "@/app/actions";
+import DeleteMovieModal from "./DeleteMovieModal";
 
 type MovieSearchProps = {
   movies: Movie[];
@@ -13,11 +15,27 @@ export default function MovieSearch({ movies }: MovieSearchProps) {
   const [search, setSearch] = useState("");
   const [openMenuId, setOpenMenuId] = useState<string | null>(null);
   const [editingMovie, setEditingMovie] = useState<Movie | null>(null);
+  const [movieToDelete, setMovieToDelete] = useState<Movie | null>(null);
 
   const filteredMovies = movies.filter((movie) =>
   movie.title.toLowerCase().includes(search.toLowerCase()) ||
   movie.director.toLowerCase().includes(search.toLowerCase())
 );;
+
+async function handleDelete(movie:Movie) {
+  setMovieToDelete(movie);
+  setOpenMenuId(null);
+}
+
+async function confirmDelete() {
+  if(!movieToDelete) return;
+
+  const result = await deleteMovie(movieToDelete._id);
+
+  if(result.success) {
+    setMovieToDelete(null);
+  }
+}
 
   return (
     <div className="w-full min-w-0">
@@ -38,7 +56,8 @@ export default function MovieSearch({ movies }: MovieSearchProps) {
           onEdit={() => {
             setEditingMovie(movie)
             setOpenMenuId(null)
-          }}/>
+          }}
+          onDelete={() => handleDelete(movie)}/>
         )) //Did you find what the user typed?
         ) : search ? ( //If not, do the following
             <p className="text-gray-600">
@@ -51,6 +70,11 @@ export default function MovieSearch({ movies }: MovieSearchProps) {
         <MovieModal
             movie={editingMovie}
             onClose={() => setEditingMovie(null)}
+        />
+      )}
+
+      {movieToDelete && (
+        <DeleteMovieModal movieTitle={movieToDelete.title} onConfirm={confirmDelete} onCancel={() => setMovieToDelete(null)}
         />
       )}
     </div>

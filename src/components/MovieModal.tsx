@@ -10,7 +10,7 @@ type MovieModalProps = {
 
 export default function MovieModal({ onClose,movie }: MovieModalProps) { //takes the onClose prop and makes it available inside the component
     return(
-        <div className="fixed inset-0 flex items-center justify-center bg-black/50 pb-20"> 
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 pb-20"> 
             <div className="relative w-full max-w-lg rounded-lg bg-white p-6 text-black dark:bg-gray-900 dark:text-white">
                 <button onClick={onClose} className="absolute right-4 top-4" aria-label="Close">
                         

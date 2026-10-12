@@ -1,6 +1,7 @@
 "use server";
 
 import { writeClient } from "@/sanity/lib/writeClient";
+import { revalidatePath } from "next/cache";
 
 export async function createMovie(formData: FormData) {
     console.log("Server received form data");
@@ -49,6 +50,8 @@ export async function createMovie(formData: FormData) {
     console.log(movie);
 
     console.log(posterAsset);
+
+    revalidatePath("/");
 
     return { success: true };
 }
@@ -99,6 +102,16 @@ export async function updateMovie(id: string, formData: FormData) {
     }
 
     await update.commit();
+
+    revalidatePath("/");
+
+    return { success: true };
+}
+
+export async function deleteMovie(id: string) {
+    await writeClient.delete(id);
+
+    revalidatePath("/");
 
     return { success: true };
 }

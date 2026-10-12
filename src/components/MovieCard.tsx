@@ -8,9 +8,10 @@ type MovieCardProps = {
   menuOpen: boolean;
   onMenuToggle: () => void;
   onEdit: () => void;
+  onDelete: () => void;
 };
 
-export default function MovieCard({ movie, menuOpen, onMenuToggle, onEdit}: MovieCardProps) {
+export default function MovieCard({ movie, menuOpen, onMenuToggle, onEdit, onDelete}: MovieCardProps) {
   
   return (
     <div className="relative rounded-lg border">
@@ -21,7 +22,7 @@ export default function MovieCard({ movie, menuOpen, onMenuToggle, onEdit}: Movi
             alt={`Poster for ${movie.title}`}
             width={300}
             height={450}
-            className="h-auto w-full object-cover"
+            className="h-[450px] w-full object-cover rounded-t-lg"
           />
 
           <div className="px-4 pt-4 pb-0">
@@ -58,6 +59,7 @@ export default function MovieCard({ movie, menuOpen, onMenuToggle, onEdit}: Movi
             </button>
 
             <button type="button"
+              onClick={onDelete}
               className="block w-full rounded-md px-3 py-2 text-left text-red-600 hover:bg-gray-100 dark:hover:bg-gray-800">
                 Delete movie
               </button>
