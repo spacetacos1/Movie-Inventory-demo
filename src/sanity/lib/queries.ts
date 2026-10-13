@@ -1,6 +1,7 @@
 export const moviesQuery = `*[_type == "movie"]{
   _id,
   title,
+  status,
   director,
   rating,
   budget,

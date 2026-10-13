@@ -17,10 +17,23 @@ export default function MovieSearch({ movies }: MovieSearchProps) {
   const [editingMovie, setEditingMovie] = useState<Movie | null>(null);
   const [movieToDelete, setMovieToDelete] = useState<Movie | null>(null);
 
-  const filteredMovies = movies.filter((movie) =>
+  const nowShowingMovies = movies.filter(
+    (movie) => movie.status === "nowShowing"
+  );
+
+  const comingSoonMovies = movies.filter(
+    (movie) => movie.status === "comingSoon"
+  );
+
+  const filteredNowShowing = nowShowingMovies.filter((movie) =>
   movie.title.toLowerCase().includes(search.toLowerCase()) ||
-  movie.director.toLowerCase().includes(search.toLowerCase())
-);;
+  movie.director.toLowerCase().includes(search.toLowerCase()));
+
+  const filteredComingSoon = comingSoonMovies.filter((movie) =>
+  movie.title.toLowerCase().includes(search.toLowerCase()) ||
+  movie.director.toLowerCase().includes(search.toLowerCase()));
+
+  const hasSearchResults = filteredNowShowing.length > 0 || filteredComingSoon.length > 0;
 
 async function handleDelete(movie:Movie) {
   setMovieToDelete(movie);
@@ -47,9 +60,14 @@ async function confirmDelete() {
         className="mb-6 w-full rounded-lg border p-3"
       />
 
+      {filteredNowShowing.length > 0 && (
+      <section className="mb-10">
+        <h2 className="mb-4 text-2x1 font-bold">
+          Now Showing
+        </h2>
       <div className="grid grid-cols-1 items-start gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {filteredMovies.length > 0 ? ( //Did the user type something?
-        filteredMovies.map((movie) => ( //If they did then search for it and display
+        {filteredNowShowing.length > 0 ? ( //Did the user type something?
+        filteredNowShowing.map((movie) => ( //If they did then search for it and display
 
           <MovieCard key={movie._id} movie={movie} menuOpen={openMenuId === movie._id}
           onMenuToggle={() => setOpenMenuId(openMenuId === movie._id ? null : movie._id)}
@@ -59,12 +77,36 @@ async function confirmDelete() {
           }}
           onDelete={() => handleDelete(movie)}/>
         )) //Did you find what the user typed?
-        ) : search ? ( //If not, do the following
-            <p className="text-gray-600">
-                No movies found.
-            </p>
         ) : null}
       </div>
+      </section> )}
+
+      {filteredComingSoon.length > 0 && (
+      <section className="mb-10">
+        <h2 className="mb-4 text-2x1 font-bold">
+          Coming Soon
+        </h2>
+      <div className="grid grid-cols-1 items-start gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {filteredComingSoon.length > 0 ? ( //Did the user type something?
+        filteredComingSoon.map((movie) => ( //If they did then search for it and display
+
+          <MovieCard key={movie._id} movie={movie} menuOpen={openMenuId === movie._id}
+          onMenuToggle={() => setOpenMenuId(openMenuId === movie._id ? null : movie._id)}
+          onEdit={() => {
+            setEditingMovie(movie)
+            setOpenMenuId(null)
+          }}
+          onDelete={() => handleDelete(movie)}/>
+        )) //Did you find what the user typed?
+        ) : null}
+      </div>
+      </section>)}
+
+      {search && !hasSearchResults && (
+        <p className="mt-4 text-gray-600">
+          No Movies Found.
+        </p>
+      )}
 
       {editingMovie && (
         <MovieModal

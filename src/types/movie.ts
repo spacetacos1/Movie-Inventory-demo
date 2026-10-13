@@ -1,6 +1,7 @@
 export type Movie = {
     _id: string;
     title: string;
+    status: "nowShowing" | "comingSoon";
     director: string;
     rating: string;
     budget: number;

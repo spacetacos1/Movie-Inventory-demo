@@ -118,6 +118,21 @@ export default function MovieForm({movie}: MovieFormProps) { //Note: Because thi
             </div>
 
             <div className="flex flex-col gap-2">
+            <label htmlFor="status">
+                Status
+            </label>
+            <select 
+            id="status" 
+            name="status" 
+            required 
+            defaultValue={movie?.status ?? "nowShowing"}
+            className="rounded-md border bg-white px-3 py-2 text-black dark:bg-gray-900 dark:text-white">
+                <option value="nowShowing">Now Showing</option>
+                <option value="comingSoon">Coming Soon</option>
+            </select>
+            </div>
+
+            <div className="flex flex-col gap-2">
             <label htmlFor="budget">
                 Budget
             </label>

@@ -65,5 +65,18 @@ export const movieType = defineType({
       type: "image",
       validation: (Rule) => Rule.required(),
     }),
+    defineField({
+      name: "status",
+      title: "Status",
+      type: "string",
+      options: {
+        list: [
+          { title: "Now Showing", value: "nowShowing"},
+          { title: "Coming Soon", value: "comingSoon"},
+        ],
+      },
+      initialValue: "nowShowing",
+      validation: (Rule) => Rule.required(),
+    }),
   ],
 });

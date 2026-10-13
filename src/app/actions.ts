@@ -60,6 +60,7 @@ export async function updateMovie(id: string, formData: FormData) {
     const title = formData.get("title");
     const director = formData.get("director");
     const rating = formData.get("rating");
+    const status = formData.get("status");
     const budget = formData.get("budget");
     const releaseDate = formData.get("releaseDate");
     const description = formData.get("description");
@@ -73,6 +74,7 @@ export async function updateMovie(id: string, formData: FormData) {
         },
         director,
         rating,
+        status,
         budget: Number(budget),
         releaseDate,
         description,
